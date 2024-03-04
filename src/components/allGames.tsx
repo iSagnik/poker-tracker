@@ -13,12 +13,15 @@ import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
+import CashGameCard from './cashGameCard.tsx'
 
 const AllGames = ({ setShowAllGames }: any) => {
     const { gameData, setGameData } = useGameData();
     const [editIcon, setEditIcon] = useState(false);
     const [cashGames, setCashGames] = useState<CashGame[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
+    const [currentCard, setCurrentCard] = useState<CashGame | null>(null);
+    const [showGameCard, setShowGameCard] = useState(false);
 
     useEffect(() => {
         setCashGames(gameData.cashGameSessions)
@@ -38,12 +41,17 @@ const AllGames = ({ setShowAllGames }: any) => {
         </Box>
     );
 
-    const handleDelete = (id: string) => {
-        const updatedcashGames: CashGame[] = gameData.cashGameSessions.filter((cashGame) => cashGame.id !== id);
+    const handleDelete = () => {
+        if (currentCard === null) {
+            alert("Error: Could not delete cash game.");
+            return;
+        }
+        const updatedcashGames: CashGame[] = gameData.cashGameSessions.filter((cashGame) => cashGame.id !== currentCard.id);
         let updatedGameData: User = gameData;
         updatedGameData.cashGameSessions = updatedcashGames
         setGameData(updatedGameData)
         setCashGames(updatedGameData.cashGameSessions)
+        setCurrentCard(null)
     }
 
     const CardData = ({ cardData }: any) => {
@@ -59,34 +67,35 @@ const AllGames = ({ setShowAllGames }: any) => {
         return (
             <Fragment>
                 <CardContent>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        {cardData.date?.toDateString()}
-                    </Typography>
                     <Typography variant="h5" component="div">
                         {cardData.location}{bull}<span style={{ color: profitColour }}>${profit.toFixed(2)}</span>
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {cardData.gameType}
                     </Typography>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                        {new Date(cardData.date).toDateString()}
+                    </Typography>
                     <Typography variant="body2">
                         <>${cardData.stake?.smallBlind.toFixed(2)} / ${cardData.stake?.bigBlind.toFixed(2)} / ${cardData.stake?.ante.toFixed(2)}</>
                     </Typography>
                 </CardContent>
-                {
-
-                    <CardActions>
-                        <Button size="small">Details</Button>
-                        {editIcon && (<Button size="small" startIcon={<Delete onClick={() => setOpenDialog(true)} sx={{ color: red[500] }} />}></Button>)}
-                        <DeleteDialog setOpenDialog={setOpenDialog} openDialog={openDialog} id={cardData.id} onConfirm={handleDelete} />
-                    </CardActions>
-
-                }
-
+                <CardActions>
+                    <Button size="small" onClick={() => {
+                        setCurrentCard(cardData)
+                        setShowGameCard(true)
+                    }}>Details</Button>
+                    {editIcon && (<Button size="small" startIcon={<Delete onClick={() => {
+                        setOpenDialog(true)
+                        setCurrentCard(cardData)
+                    }} sx={{ color: red[500] }} />}></Button>)}
+                    <DeleteDialog setOpenDialog={setOpenDialog} openDialog={openDialog} onConfirm={handleDelete} />
+                </CardActions>
             </Fragment>
         )
     }
 
-    const DeleteDialog = ({ setOpenDialog, openDialog, id, onConfirm }: any) => {
+    const DeleteDialog = ({ setOpenDialog, openDialog, onConfirm }: any) => {
         return (
             <Dialog
                 open={openDialog}
@@ -95,11 +104,11 @@ const AllGames = ({ setShowAllGames }: any) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Delete cash game?"}
+                    {"Delete cash game at " + currentCard?.location + "?"}
                 </DialogTitle>
                 <DialogActions>
                     <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-                    <Button onClick={() => { setOpenDialog(false); onConfirm(id); }} color="error">
+                    <Button onClick={() => { setOpenDialog(false); onConfirm(); }} color="error">
                         Delete
                     </Button>
                 </DialogActions>
@@ -127,7 +136,8 @@ const AllGames = ({ setShowAllGames }: any) => {
                         {cardData && <CardData cardData={cardData} />}
                     </Card>
                 ))}
-            </Stack >
+            </Stack>
+            {showGameCard && <CashGameCard cashGame={currentCard} showGameCard={showGameCard} setShowGameCard={setShowGameCard} />}
         </>
     )
 }

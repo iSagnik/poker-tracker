@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, SyntheticEvent } from 'react';
 import './App.css'
 import AddCashGameForm from './components/addCashGame.tsx';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,12 +11,15 @@ import GameDataContext from './components/gameDataContext.tsx';
 import { getEmptyUserData, exportToJson, handleFileUploadHelper } from './util/util.tsx'
 import AllGames from './components/allGames.tsx'
 import Report from './components/report.tsx'
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
   const [showAllGames, setShowAllGames] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [gameData, setGameData] = useState<User>(getEmptyUserData());
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleAddCashGame = () => {
     setShowForm(true);
@@ -32,17 +35,30 @@ const App = () => {
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     handleFileUploadHelper(e, setGameData)
-    console.log(JSON.stringify(gameData))
-
+    setShowSuccess(true)
   }
 
   const handleSave = () => {
     console.log(gameData)
-    exportToJson(gameData)
+    try {
+      exportToJson(gameData)
+      setShowSuccess(true)
+    }
+    catch (error) {
+      alert("Error: " + error)
+    }
   }
 
   const showLandingPage = () => {
     return !(showForm === true || showAllGames === true || showReport === true);
+  }
+
+  const closeSuccess = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setShowSuccess(false);
   }
 
   return (
@@ -70,10 +86,20 @@ const App = () => {
                 </>
               )
             }
-            {showForm && <AddCashGameForm setShowForm={setShowForm} />}
+            {showForm && <AddCashGameForm setShowForm={setShowForm} setShowSuccess={setShowSuccess} />}
             {showAllGames && <AllGames setShowAllGames={setShowAllGames} />}
             {showReport && <Report setShowReport={setShowReport} />}
           </Container>
+          <Snackbar open={showSuccess} autoHideDuration={1500} onClose={closeSuccess}>
+            <Alert
+              onClose={closeSuccess}
+              severity="success"
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
         </>
       </LocalizationProvider>
     </GameDataContext.Provider>

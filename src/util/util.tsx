@@ -53,7 +53,7 @@ export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGame
             setGameData(user)
         }
         catch (error) {
-            alert('Could not load game data from the provided file.\n' + error)
+            alert("Error: " + error)
             setGameData(getEmptyUserData())
         }
     };

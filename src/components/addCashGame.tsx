@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import { useGameData } from './gameDataContext.tsx';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddCashGameForm = ({ setShowForm }: any) => {
+const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const { gameData, setGameData } = useGameData();
     const [gameType, setGameType] = useState(GameType.TEXAS_HOLD_EM);
     const [stake, setStake] = useState({
@@ -118,6 +118,7 @@ const AddCashGameForm = ({ setShowForm }: any) => {
         let currentGameData: User = gameData
         currentGameData.cashGameSessions.push(cashGame)
         setGameData(currentGameData)
+        setShowSuccess(true)
         setShowForm(false)
     };
 
@@ -266,7 +267,8 @@ const AddCashGameForm = ({ setShowForm }: any) => {
                 <Button variant="outlined" onClick={() => setShowForm(false)}>
                     Cancel
                 </Button>
-            </FormContainer></>
+            </FormContainer>
+        </>
     )
 }
 
