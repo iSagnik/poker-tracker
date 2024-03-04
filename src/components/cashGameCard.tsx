@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import { CashGame } from "../data_model/dataModel"
 import { LimitType } from "../data_model/enums.ts"
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -13,6 +12,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 const CashGameCard = ({ cashGame, showGameCard, setShowGameCard }: any) => {
     const profit: number = cashGame.cashedOut?.valueOf() - cashGame.buyIn?.valueOf();
@@ -76,7 +76,7 @@ const CashGameCard = ({ cashGame, showGameCard, setShowGameCard }: any) => {
                         </ListItem>
                         <Divider component="li" />
                         <ListItem>
-                            <ListItemText primary={profit.toFixed(2)} secondary="Profit" />
+                            <ListItemText primary={<Typography variant="h5" style={{ color: profitColour }}>{"$" + profit.toFixed(2)}</Typography>} secondary="Profit" />
                         </ListItem>
                         <Divider component="li" />
                         <ListItem>

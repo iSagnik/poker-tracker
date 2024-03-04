@@ -25,7 +25,6 @@ const Report = ({ setShowReport }: any) => {
                     scrollButtons
                     allowScrollButtonsMobile
                     aria-label="scrollable tabs"
-                    centered
                 >
                     <Tab label="Overall" />
                     <Tab label="Charts" />
