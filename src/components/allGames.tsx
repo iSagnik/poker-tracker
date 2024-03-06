@@ -14,6 +14,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import CashGameCard from './cashGameCard.tsx'
+import { updateGameStats } from '../util/util.tsx'
 
 const AllGames = ({ setShowAllGames }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -49,13 +50,14 @@ const AllGames = ({ setShowAllGames }: any) => {
         const updatedcashGames: CashGame[] = gameData.cashGameSessions.filter((cashGame) => cashGame.id !== currentCard.id);
         let updatedGameData: User = gameData;
         updatedGameData.cashGameSessions = updatedcashGames
+        updatedGameData.gameStats = updateGameStats(updatedGameData)
         setGameData(updatedGameData)
         setCashGames(updatedGameData.cashGameSessions)
         setCurrentCard(null)
     }
 
     const CardData = ({ cardData }: any) => {
-        const profit: number = cardData.cashedOut?.valueOf() - cardData.buyIn?.valueOf();
+        const profit: number = cardData.cashedOut - cardData.buyIn;
         let profitColour = "gray"
         if (profit > 0) {
             profitColour = "green"

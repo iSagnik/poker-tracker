@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { User } from '../data_model/dataModel.ts'
+import { User, GameStats } from '../data_model/dataModel.ts'
 
 export const getEmptyUserData = () => {
     return {
@@ -35,11 +35,13 @@ export const exportToJson = (objectData: User) => {
 }
 
 
-export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGameData: (gameData: User) => void) => {
+export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGameData: (gameData: User) => void, setFilename: any) => {
     if (!e.target.files) {
         return;
     }
     const file = e.target.files[0];
+    const { name } = file;
+    setFilename(name);
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -50,6 +52,7 @@ export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGame
         // Read result
         try {
             const user: User = JSON.parse(result as string);
+            user.gameStats = updateGameStats(user)
             setGameData(user)
         }
         catch (error) {
@@ -59,3 +62,43 @@ export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGame
     };
     reader.readAsBinaryString(file);
 };
+
+export const updateGameStats = (user: User) => {
+    const { cashGameSessions } = user;
+
+    // Initialize stats with starting values
+    const gameStats: GameStats = {
+        income: 0,
+        hourlyIncome: 0,
+        sessionlyIncome: 0,
+        durationMinutes: 0,
+        cashedCount: 0,
+        sessionCount: 0
+    };
+
+    let cashedCount = 0;
+
+    // Iterate through cash game sessions
+    for (const session of cashGameSessions) {
+        const profit = session.cashedOut - session.buyIn; // May be negative
+        if(session.cashedOut > 0) {
+            cashedCount++;
+        }
+        gameStats.income += profit;
+        gameStats.durationMinutes += session.durationMinutes;
+
+    }
+
+    // Hourly income
+    if (gameStats.durationMinutes > 0) {
+        gameStats.hourlyIncome = gameStats.income / (gameStats.durationMinutes / 60)
+    }
+    gameStats.sessionCount =  cashGameSessions.length;
+    // Sessionly income
+    gameStats.sessionlyIncome = gameStats.income / cashGameSessions.length;
+
+    // Calculate cashed rate
+    gameStats.cashedCount = cashedCount;
+
+    return gameStats
+}

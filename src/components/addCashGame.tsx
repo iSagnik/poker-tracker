@@ -15,6 +15,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useGameData } from './gameDataContext.tsx';
 import { v4 as uuidv4 } from 'uuid';
+import { updateGameStats } from '../util/util.tsx'
 
 const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -117,6 +118,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         }
         let currentGameData: User = gameData
         currentGameData.cashGameSessions.push(cashGame)
+        currentGameData.gameStats = updateGameStats(currentGameData)
         setGameData(currentGameData)
         setShowSuccess(true)
         setShowForm(false)

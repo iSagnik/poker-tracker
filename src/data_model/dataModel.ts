@@ -8,17 +8,18 @@ export interface User {
 }
 
 export interface GameStats {
-    income: Number,
-    hourlyIncome: Number,
-    sessionlyIncome: Number,
-    durationMinutes: Number,
-    cashedRate: Number,
+    income: number,
+    hourlyIncome: number,
+    sessionlyIncome: number,
+    durationMinutes: number,
+    cashedCount: number,
+    sessionCount: number
 }
 
 export interface Stake {
-    smallBlind: Number,
-    bigBlind: Number,
-    ante: Number
+    smallBlind: number,
+    bigBlind: number,
+    ante: number
 }
 
 export interface CashGame {
@@ -26,14 +27,14 @@ export interface CashGame {
     gameType: GameType,
     stake: Stake,
     limitType: LimitType,
-    fixedLimit: Number,
+    fixedLimit: number,
     location: string,
-    buyIn: Number,
-    cashedOut: Number,
-    playerCount: Number,
+    buyIn: number,
+    cashedOut: number,
+    playerCount: number,
     date: Date | null | undefined,
     startTime: Date | null | undefined,
     endTime: Date | null | undefined,
-    durationMinutes: Number,
+    durationMinutes: number,
     notes: string
 }

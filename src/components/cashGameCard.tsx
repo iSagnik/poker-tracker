@@ -15,7 +15,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 const CashGameCard = ({ cashGame, showGameCard, setShowGameCard }: any) => {
-    const profit: number = cashGame.cashedOut?.valueOf() - cashGame.buyIn?.valueOf();
+    const profit: number = cashGame.cashedOut - cashGame.buyIn;
     let profitColour = "gray"
     if (profit > 0) {
         profitColour = "green"
