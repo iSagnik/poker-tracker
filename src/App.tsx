@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { Upload } from '@mui/icons-material';
 import { User } from './data_model/dataModel.ts'
 import GameDataContext from './components/gameDataContext.tsx';
-import { getEmptyUserData, exportToJson, handleFileUploadHelper, updateGameStats } from './util/util.tsx'
+import { getEmptyUserData, exportToJson, handleFileUploadHelper } from './util/util.tsx'
 import AllGames from './components/allGames.tsx'
 import Report from './components/report.tsx'
 import Snackbar from '@mui/material/Snackbar';
@@ -82,7 +82,7 @@ const App = () => {
                     startIcon={<Upload />}
                   >
                     Upload Data
-                    <input type="file" accept="text/plain, application/json" hidden onChange={handleFileUpload} />
+                    <input type="file" accept="text/plain,application/json" hidden onChange={handleFileUpload} />
                   </Button>
                   {filename !== "" && <>Data loaded from {filename}</>}
                 </>

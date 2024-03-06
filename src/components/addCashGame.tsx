@@ -99,6 +99,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         const gameEndTime: Date | undefined = endTime?.toDate();
         const id: string = Date.now().toString() + '-' + uuidv4();
         // Validate times and durations.
+        if (buyIn <= 0) {
+            alert("Buy in must be greater than 0");
+            return;
+        }
+        const profit = cashedOut - buyIn
 
         let cashGame: CashGame = {
             id,
@@ -109,6 +114,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             location,
             buyIn,
             cashedOut,
+            profit,
             playerCount,
             date: gameDate,
             startTime: gameStartTime,
@@ -132,6 +138,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             <FormContainer onSubmit={handleSubmit}>
                 <InputLabel id="game-type-label">Game Type</InputLabel>
                 <Select name="gameType"
+                    required
                     value={gameType}
                     onChange={(event) => handleGameTypeChange(event)}>
                     <MenuItem value={GameType.TEXAS_HOLD_EM}>Texas Hold'em Poker</MenuItem>
@@ -181,6 +188,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 <br />
                 <InputLabel>Limit Type</InputLabel>
                 <Select
+                    required
                     name="limitType"
                     value={limitType}
                     onChange={(event) => handleLimitChange(event)}
@@ -206,6 +214,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 <br />
                 <InputLabel>Location</InputLabel>
                 <TextField
+                    required
                     name="location"
                     value={location}
                     onChange={(event) => setLocation(event.target.value)}
@@ -213,6 +222,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 <br />
                 <InputLabel>Buy In</InputLabel>
                 <TextField
+                    required
                     name="buyIn"
                     value={buyIn}
                     type="number"
@@ -221,6 +231,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 <br />
                 <InputLabel>Cashed Out</InputLabel>
                 <TextField
+                    required
                     name="cashedOut"
                     value={cashedOut}
                     onChange={(event) => setCashedOut(Number(event.target.value))}
@@ -255,6 +266,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 <br />
                 <InputLabel>Duration (Minutes)</InputLabel>
                 <TextField
+                    disabled={startTime !== null && endTime !== null}
                     name="durationMinutes"
                     value={durationMinutes}
                     onChange={(event) => setDurationMinutes(Number(event.target.value))}

@@ -10,7 +10,8 @@ export const getEmptyUserData = () => {
             hourlyIncome: 0,
             sessionlyIncome: 0,
             durationMinutes: 0,
-            cashedRate: 0
+            cashedCount: 0,
+            sessionCount: 0
         },
         joinDate: new Date()
     }
@@ -80,8 +81,8 @@ export const updateGameStats = (user: User) => {
 
     // Iterate through cash game sessions
     for (const session of cashGameSessions) {
-        const profit = session.cashedOut - session.buyIn; // May be negative
-        if(session.cashedOut > 0) {
+        const profit = session.profit; // May be negative
+        if (session.cashedOut > 0) {
             cashedCount++;
         }
         gameStats.income += profit;
@@ -93,7 +94,7 @@ export const updateGameStats = (user: User) => {
     if (gameStats.durationMinutes > 0) {
         gameStats.hourlyIncome = gameStats.income / (gameStats.durationMinutes / 60)
     }
-    gameStats.sessionCount =  cashGameSessions.length;
+    gameStats.sessionCount = cashGameSessions.length;
     // Sessionly income
     gameStats.sessionlyIncome = gameStats.income / cashGameSessions.length;
 

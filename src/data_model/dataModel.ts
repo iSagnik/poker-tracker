@@ -31,6 +31,7 @@ export interface CashGame {
     location: string,
     buyIn: number,
     cashedOut: number,
+    profit: number,
     playerCount: number,
     date: Date | null | undefined,
     startTime: Date | null | undefined,

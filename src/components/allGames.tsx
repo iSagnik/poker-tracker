@@ -57,7 +57,7 @@ const AllGames = ({ setShowAllGames }: any) => {
     }
 
     const CardData = ({ cardData }: any) => {
-        const profit: number = cardData.cashedOut - cardData.buyIn;
+        const profit: number = cardData.profit;
         let profitColour = "gray"
         if (profit > 0) {
             profitColour = "green"
