@@ -158,174 +158,176 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             <Button variant="outlined" onClick={() => setShowForm(false)}>
                 Cancel
             </Button>
-            <FormContainer onSubmit={handleSubmit}>
-                <FormFieldContainer>
-                    <InputLabel id="game-type-label">Game Type</InputLabel>
-                    <Select name="gameType"
-                        required
-                        value={gameType}
-                        onChange={(event) => handleGameTypeChange(event)}>
-                        <MenuItem value={GameType.TEXAS_HOLD_EM}>Texas Hold'em Poker</MenuItem>
-                        <MenuItem value={GameType.OMAHA}>Omaha</MenuItem>
-                        <MenuItem value={GameType.HORSE}>Horse</MenuItem>
-                        <MenuItem value={GameType.SEVEN_CARD_STUD}>7 Card Stud</MenuItem>
-                        <MenuItem value={GameType.SEVEN_CARD_STUD_EIGHT}>7 Card Stud 8</MenuItem>
-                    </Select>
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Stake</InputLabel>
-                    <label htmlFor="smallBlind">Small Blind</label>
-                    <Autocomplete
-                        id='small-blind-input'
-                        style={{maxWidth: '200px'}}
-                        freeSolo
-                        options={stakeValueOptions.map((option) => String(option.value))}
-                        onChange={(event, value) => handleSmallBlindChange(Number(value))}
-                        renderInput={(params) => <TextField {...params} label="Small Blind" />}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <label htmlFor="bigBlind">Big Blind</label>
-                    <Autocomplete
-                        id='big-blind-input'
-                        style={{maxWidth: '200px'}}
-                        freeSolo
-                        options={stakeValueOptions.map((option) => String(option.value))}
-                        onChange={(event, value) => handleBigBlindChange(Number(value))}
-                        renderInput={(params) => <TextField {...params} label="Big Blind" />}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <label htmlFor="ante">Ante</label>
-                    <Autocomplete
-                        id='ante-input'
-                        style={{maxWidth: '200px'}}
-                        freeSolo
-                        options={stakeValueOptions.map((option) => String(option.value))}
-                        onChange={(event, value) => handleAnteChange(Number(value))}
-                        renderInput={(params) => <TextField {...params} label="Ante" />}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Limit Type</InputLabel>
-                    <Select
-                        required
-                        name="limitType"
-                        value={limitType}
-                        onChange={(event) => handleLimitChange(event)}
-                    >
-                        <MenuItem value={LimitType.NO_LIMIT}>No Limit</MenuItem>
-                        <MenuItem value={LimitType.FIXED_LIMIT}>Fixed Limit</MenuItem>
-                        <MenuItem value={LimitType.POT_LIMIT}>Pot Limit</MenuItem>
-                        <MenuItem value={LimitType.POT_LIMIT_PRE}>Pot Limit Preflop</MenuItem>
-                        <MenuItem value={LimitType.MIXED_LIMIT}>Mixed Limit</MenuItem>
-                        <MenuItem value={LimitType.SPREAD_LIMIT}>Spread Limit</MenuItem>
-                    </Select>
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    {showFixedLimit && (
-                        <>
-                            <InputLabel>Fixed Limit</InputLabel>
-                            <TextField
-                                name="fixedLimit"
-                                value={fixedLimit}
-                                onChange={(event) => setFixedLimit(Number(event.target.value))}
-                                type="number"
-                            />
-                        </>)}
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Location</InputLabel>
-                    <TextField
-                        required
-                        name="location"
-                        value={location}
-                        onChange={(event) => setLocation(event.target.value)}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Buy In</InputLabel>
-                    <TextField
-                        required
-                        name="buyIn"
-                        value={buyIn}
-                        type="number"
-                        onChange={(event) => setBuyIn(Number(event.target.value))}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Cashed Out</InputLabel>
-                    <TextField
-                        required
-                        name="cashedOut"
-                        value={cashedOut}
-                        onChange={(event) => setCashedOut(Number(event.target.value))}
-                        type="number"
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Player Count</InputLabel>
-                    <TextField
-                        name="playerCount"
-                        value={playerCount}
-                        onChange={(event) => setPlayerCount(Number(event.target.value))}
-                        type="number"
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Players</InputLabel>
-                    <List>
-                        {players.map((player, index) => (
-                            <ListItem key={index}>
-                                <ListItemText primary={player.name} />
-                                <Button startIcon={<Cancel onClick={() => {
-                                    removePlayer(index)
-                                }} />}></Button>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <TextField
-                        label="Add player"
-                        value={newPlayerName}
-                        onChange={(event) => setNewPlayerName(event.target.value)}
-                    />
-                    <Button onClick={addPlayer} disabled={players.length >= playerCount}>Add</Button>
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <DatePicker label="Date" value={date} onChange={(newDate) => setDate(newDate)} />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <TimePicker
-                        label="Start Time"
-                        value={startTime}
-                        onChange={(newStartTime) => handleStartTimeChange(newStartTime)}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <TimePicker
-                        label="End Time"
-                        value={endTime}
-                        onChange={(newEndTime) => handleEndTimeChange(newEndTime)}
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Duration (Minutes)</InputLabel>
-                    <TextField
-                        disabled={startTime !== null && endTime !== null}
-                        name="durationMinutes"
-                        value={durationMinutes}
-                        onChange={(event) => setDurationMinutes(Number(event.target.value))}
-                        type="number"
-                    />
-                </FormFieldContainer>
-                <FormFieldContainer>
-                    <InputLabel>Notes</InputLabel>
-                    <TextareaAutosize name="notes" value={notes} minRows={5} onChange={(event) => setNotes(event.target.value)} />
-                </FormFieldContainer>
-                <Button variant="contained" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => setShowForm(false)}>
-                    Cancel
-                </Button>
+            <FormContainer>
+                <form onSubmit={handleSubmit}>
+                    <FormFieldContainer>
+                        <InputLabel id="game-type-label">Game Type</InputLabel>
+                        <Select name="gameType"
+                            required
+                            value={gameType}
+                            onChange={(event) => handleGameTypeChange(event)}>
+                            <MenuItem value={GameType.TEXAS_HOLD_EM}>Texas Hold'em Poker</MenuItem>
+                            <MenuItem value={GameType.OMAHA}>Omaha</MenuItem>
+                            <MenuItem value={GameType.HORSE}>Horse</MenuItem>
+                            <MenuItem value={GameType.SEVEN_CARD_STUD}>7 Card Stud</MenuItem>
+                            <MenuItem value={GameType.SEVEN_CARD_STUD_EIGHT}>7 Card Stud 8</MenuItem>
+                        </Select>
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Stake</InputLabel>
+                        <label htmlFor="smallBlind">Small Blind</label>
+                        <Autocomplete
+                            id='small-blind-input'
+                            style={{ maxWidth: '200px' }}
+                            freeSolo
+                            options={stakeValueOptions.map((option) => String(option.value))}
+                            onChange={(event, value) => handleSmallBlindChange(Number(value))}
+                            renderInput={(params) => <TextField {...params} label="Small Blind" />}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <label htmlFor="bigBlind">Big Blind</label>
+                        <Autocomplete
+                            id='big-blind-input'
+                            style={{ maxWidth: '200px' }}
+                            freeSolo
+                            options={stakeValueOptions.map((option) => String(option.value))}
+                            onChange={(event, value) => handleBigBlindChange(Number(value))}
+                            renderInput={(params) => <TextField {...params} label="Big Blind" />}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <label htmlFor="ante">Ante</label>
+                        <Autocomplete
+                            id='ante-input'
+                            style={{ maxWidth: '200px' }}
+                            freeSolo
+                            options={stakeValueOptions.map((option) => String(option.value))}
+                            onChange={(event, value) => handleAnteChange(Number(value))}
+                            renderInput={(params) => <TextField {...params} label="Ante" />}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Limit Type</InputLabel>
+                        <Select
+                            required
+                            name="limitType"
+                            value={limitType}
+                            onChange={(event) => handleLimitChange(event)}
+                        >
+                            <MenuItem value={LimitType.NO_LIMIT}>No Limit</MenuItem>
+                            <MenuItem value={LimitType.FIXED_LIMIT}>Fixed Limit</MenuItem>
+                            <MenuItem value={LimitType.POT_LIMIT}>Pot Limit</MenuItem>
+                            <MenuItem value={LimitType.POT_LIMIT_PRE}>Pot Limit Preflop</MenuItem>
+                            <MenuItem value={LimitType.MIXED_LIMIT}>Mixed Limit</MenuItem>
+                            <MenuItem value={LimitType.SPREAD_LIMIT}>Spread Limit</MenuItem>
+                        </Select>
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        {showFixedLimit && (
+                            <>
+                                <InputLabel>Fixed Limit</InputLabel>
+                                <TextField
+                                    name="fixedLimit"
+                                    value={fixedLimit}
+                                    onChange={(event) => setFixedLimit(Number(event.target.value))}
+                                    type="number"
+                                />
+                            </>)}
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Location</InputLabel>
+                        <TextField
+                            required
+                            name="location"
+                            value={location}
+                            onChange={(event) => setLocation(event.target.value)}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Buy In</InputLabel>
+                        <TextField
+                            required
+                            name="buyIn"
+                            value={buyIn}
+                            type="number"
+                            onChange={(event) => setBuyIn(Number(event.target.value))}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Cashed Out</InputLabel>
+                        <TextField
+                            required
+                            name="cashedOut"
+                            value={cashedOut}
+                            onChange={(event) => setCashedOut(Number(event.target.value))}
+                            type="number"
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Player Count</InputLabel>
+                        <TextField
+                            name="playerCount"
+                            value={playerCount}
+                            onChange={(event) => setPlayerCount(Number(event.target.value))}
+                            type="number"
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Players</InputLabel>
+                        <List>
+                            {players.map((player, index) => (
+                                <ListItem key={index}>
+                                    <ListItemText primary={player.name} />
+                                    <Button startIcon={<Cancel onClick={() => {
+                                        removePlayer(index)
+                                    }} />}></Button>
+                                </ListItem>
+                            ))}
+                        </List>
+                        <TextField
+                            label="Add player"
+                            value={newPlayerName}
+                            onChange={(event) => setNewPlayerName(event.target.value)}
+                        />
+                        <Button onClick={addPlayer} disabled={players.length >= playerCount}>Add</Button>
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <DatePicker label="Date" value={date} onChange={(newDate) => setDate(newDate)} />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <TimePicker
+                            label="Start Time"
+                            value={startTime}
+                            onChange={(newStartTime) => handleStartTimeChange(newStartTime)}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <TimePicker
+                            label="End Time"
+                            value={endTime}
+                            onChange={(newEndTime) => handleEndTimeChange(newEndTime)}
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Duration (Minutes)</InputLabel>
+                        <TextField
+                            disabled={startTime !== null && endTime !== null}
+                            name="durationMinutes"
+                            value={durationMinutes}
+                            onChange={(event) => setDurationMinutes(Number(event.target.value))}
+                            type="number"
+                        />
+                    </FormFieldContainer>
+                    <FormFieldContainer>
+                        <InputLabel>Notes</InputLabel>
+                        <TextareaAutosize name="notes" value={notes} minRows={5} onChange={(event) => setNotes(event.target.value)} />
+                    </FormFieldContainer>
+                    <Button variant="contained" type="submit">Submit</Button>
+                    <Button variant="outlined" onClick={() => setShowForm(false)}>
+                        Cancel
+                    </Button>
+                </form>
             </FormContainer >
         </>
     );
