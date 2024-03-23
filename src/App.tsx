@@ -13,6 +13,8 @@ import AllGames from './components/allGames.tsx'
 import Report from './components/report.tsx'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import { useMediaQuery } from '@mui/material';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -62,6 +64,8 @@ const App = () => {
     setShowSuccess(false);
   }
 
+  const largerScreen = useMediaQuery('(min-width: 600px)');
+
   return (
     <GameDataContext.Provider value={{ gameData, setGameData }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -71,10 +75,13 @@ const App = () => {
             {
               showLandingPage() && (
                 <>
-                  <Button onClick={handleAddCashGame}>Add Cash Game</Button>
-                  <Button onClick={handleAllGames}>All Games</Button>
-                  <Button onClick={handleReport}>Report</Button>
-                  <Button onClick={handleSave}>Save Data</Button>
+                  <Stack direction={largerScreen ? "row" : "column"} justifyContent="center"
+                    alignItems="center">
+                    <Button onClick={handleAddCashGame}>Add Cash Game</Button>
+                    <Button onClick={handleAllGames}>All Games</Button>
+                    <Button onClick={handleReport}>Report</Button>
+                    <Button onClick={handleSave}>Save Data</Button>
+                  </Stack>
                   <Button
                     component="label"
                     variant="contained"

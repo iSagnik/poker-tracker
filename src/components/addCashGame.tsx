@@ -21,6 +21,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -152,6 +153,38 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         setShowSuccess(true)
         setShowForm(false)
     };
+
+    const largerScreen = useMediaQuery('(min-width: 600px)');
+
+    const FormFieldContainerWidth = largerScreen ? '20vw' : '100%';
+
+    const FormContainer = styled(Container)`
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 25px;
+  text-align: center;
+`;
+
+    const FormFieldContainer = styled(Box)`
+padding: 10px;
+max-width: ${FormFieldContainerWidth};
+margin: 0 auto
+`
+
+    const stakeValueOptions = [
+        { value: 0.05 },
+        { value: 0.1 },
+        { value: 0.20 },
+        { value: 0.25 },
+        { value: 0.50 },
+        { value: 1 },
+        { value: 2 },
+        { value: 3 },
+        { value: 5 },
+    ]
 
     return (
         <>
@@ -325,34 +358,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                 </Button>
             </FormContainer >
         </>
-    )
+    );
 }
-
-const FormContainer = styled(Container)`
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  max-width: 600px;
-  padding: 25px;
-`;
-
-const FormFieldContainer = styled(Box)`
-padding: 10px;
-max-width: 20vw;
-margin: 0 auto
-`
-
-const stakeValueOptions = [
-    { value: 0.05 },
-    { value: 0.1 },
-    { value: 0.20 },
-    { value: 0.25 },
-    { value: 0.50 },
-    { value: 1 },
-    { value: 2 },
-    { value: 3 },
-    { value: 5 },
-]
 
 export default AddCashGameForm;

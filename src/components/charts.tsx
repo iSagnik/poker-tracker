@@ -73,6 +73,7 @@ const Charts = () => {
 
     const options: ChartOptions<"line"> = {
         responsive: true,
+        maintainAspectRatio: false,
         interaction: {
             mode: 'nearest'
         },
@@ -108,20 +109,22 @@ const Charts = () => {
 
     return (
         <>
-            <Line
-                options={options}
-                data={
-                    {
-                        labels: prepareDataset().map((item) => item.date),
-                        datasets: [{
-                            label: 'Total Income',
-                            data: prepareDataset().map((item) => item.income),
-                            borderColor: 'rgb(53, 162, 235)',
-                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-                        }]
+            <div className="chart-container" style={{ position: 'relative', height: '40vh', width: '80vw' }}>
+                <Line
+                    options={options}
+                    data={
+                        {
+                            labels: prepareDataset().map((item) => item.date),
+                            datasets: [{
+                                label: 'Total Income',
+                                data: prepareDataset().map((item) => item.income),
+                                borderColor: 'rgb(53, 162, 235)',
+                                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                            }]
+                        }
                     }
-                }
-            />
+                />
+            </div>
         </>
     )
 

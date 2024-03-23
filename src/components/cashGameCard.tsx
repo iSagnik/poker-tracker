@@ -13,7 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import {Player } from "../data_model/dataModel.ts"
+import { Player } from "../data_model/dataModel.ts"
 
 const CashGameCard = ({ cashGame, showGameCard, setShowGameCard }: any) => {
     const profit: number = cashGame.profit;
@@ -109,13 +109,12 @@ const CashGameCard = ({ cashGame, showGameCard, setShowGameCard }: any) => {
                         }
                         <Divider component="li" />
                         <ListItem>
-                        <ListItemText primary={"Players"} secondary={cashGame.playerCount} />
-                            <List>{cashGame.players.map((player: Player) => (
+                            <ListItemText primary={"Players"} secondary={cashGame.playerCount} />
+                            <List>{cashGame.players && cashGame.players.map((player: Player) => (
                                 <ListItem key={player.name}>
                                     <ListItemText primary={player.name} />
                                 </ListItem>
                             ))}</List>
-                            <Divider component="li" />
                         </ListItem>
                         <Divider component="li" />
                         <ListItem>
