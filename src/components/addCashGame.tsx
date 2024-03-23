@@ -154,38 +154,6 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         setShowForm(false)
     };
 
-    const largerScreen = useMediaQuery('(min-width: 600px)');
-
-    const FormFieldContainerWidth = largerScreen ? '20vw' : '100%';
-
-    const FormContainer = styled(Container)`
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  max-width: 600px;
-  padding: 25px;
-  text-align: center;
-`;
-
-    const FormFieldContainer = styled(Box)`
-padding: 10px;
-max-width: ${FormFieldContainerWidth};
-margin: 0 auto
-`
-
-    const stakeValueOptions = [
-        { value: 0.05 },
-        { value: 0.1 },
-        { value: 0.20 },
-        { value: 0.25 },
-        { value: 0.50 },
-        { value: 1 },
-        { value: 2 },
-        { value: 3 },
-        { value: 5 },
-    ]
-
     return (
         <>
             <Button variant="outlined" onClick={() => setShowForm(false)}>
@@ -210,6 +178,7 @@ margin: 0 auto
                     <label htmlFor="smallBlind">Small Blind</label>
                     <Autocomplete
                         id='small-blind-input'
+                        style={{maxWidth: '200px'}}
                         freeSolo
                         options={stakeValueOptions.map((option) => String(option.value))}
                         onChange={(event, value) => handleSmallBlindChange(Number(value))}
@@ -220,6 +189,7 @@ margin: 0 auto
                     <label htmlFor="bigBlind">Big Blind</label>
                     <Autocomplete
                         id='big-blind-input'
+                        style={{maxWidth: '200px'}}
                         freeSolo
                         options={stakeValueOptions.map((option) => String(option.value))}
                         onChange={(event, value) => handleBigBlindChange(Number(value))}
@@ -230,6 +200,7 @@ margin: 0 auto
                     <label htmlFor="ante">Ante</label>
                     <Autocomplete
                         id='ante-input'
+                        style={{maxWidth: '200px'}}
                         freeSolo
                         options={stakeValueOptions.map((option) => String(option.value))}
                         onChange={(event, value) => handleAnteChange(Number(value))}
@@ -360,5 +331,37 @@ margin: 0 auto
         </>
     );
 }
+
+// const largerScreen = useMediaQuery('(min-width: 600px)');
+
+// const FormFieldContainerWidth = largerScreen ? '20vw' : '100%';
+
+const FormContainer = styled(Container)`
+border: 1px solid #ddd;
+border-radius: 5px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+margin: 0 auto;
+max-width: 600px;
+padding: 25px;
+text-align: center;
+`;
+
+const FormFieldContainer = styled(Box)`
+padding: 10px;
+max-width: 100%;
+margin: 0 auto;
+`;
+
+const stakeValueOptions = [
+    { value: 0.05 },
+    { value: 0.1 },
+    { value: 0.20 },
+    { value: 0.25 },
+    { value: 0.50 },
+    { value: 1 },
+    { value: 2 },
+    { value: 3 },
+    { value: 5 },
+];
 
 export default AddCashGameForm;
