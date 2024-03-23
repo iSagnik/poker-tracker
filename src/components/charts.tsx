@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react';
-import { LineChart } from '@mui/x-charts/LineChart';
 import { CashGame } from "../data_model/dataModel.ts"
 import { useGameData } from './gameDataContext.tsx';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js'; import { Line } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+ChartJS.register(
+    ChartDataLabels,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,);
 
 const Charts = () => {
     const { gameData } = useGameData();
@@ -9,26 +29,97 @@ const Charts = () => {
 
     useEffect(() => {
         setCashGames(gameData.cashGameSessions)
-    }, [gameData]); // Dependency array: useEffect runs when myStateVariable changes
+    }, [gameData]);
+
+    interface DataItem {
+        stake: string;
+        profit: number;
+        income: number;
+        date: string;
+    }
+
+    const prepareDataset = () => {
+        const data: DataItem[] = [];
+        let runningIncome = 0;
+        cashGames.sort((a, b) => {
+            const dateA = a.date ? new Date(a.date) : new Date(0);
+            const dateB = b.date ? new Date(b.date) : new Date(0);
+            return dateA.getTime() - dateB.getTime(); // Ascending order
+        })
+
+        cashGames.forEach((game) => {
+            // Handle potential null/NaN for profit
+            const profit = isNaN(game.profit) ? 0 : game.profit;
+            runningIncome += profit;
+
+            // Format stake
+            const stake = `${game.stake.smallBlind}/${game.stake.bigBlind}${game.stake.ante > 0 ? `/${game.stake.ante}` : ""
+                }`;
+
+            // Format date (you might want a custom date formatting function)
+            const date = game.date ? new Date(game.date).toDateString() : "";
+
+            data.push({
+                stake,
+                profit,
+                income: runningIncome,
+                date,
+            });
+        });
+        return data
+    }
+
+    const options = {
+        responsive: true,
+        tension: 0.2,
+        interaction: {
+            mode: 'nearest'
+        },
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Income over time',
+            },
+            datalabels: {
+                display: true,
+                align: "top",
+                formatter: (val: number) => val.toFixed(2)
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Time"
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: "Income"
+                }
+            }
+        }
+    };
 
     return (
         <>
-            <LineChart
-                xAxis={[
+            <Line
+                options={options}
+                data={
                     {
-                        dataKey: 'date',
-                        valueFormatter: (value: Date) => value.toLocaleDateString(),
-                    },
-                ]}
-                series={[
-                    {
-                        dataKey: 'profit',
-                        label: 'Cash',
+                        labels: prepareDataset().map((item) => item.date),
+                        datasets: [{
+                            label: 'Total Income',
+                            data: prepareDataset().map((item) => item.income),
+                            borderColor: 'rgb(53, 162, 235)',
+                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                        }]
                     }
-                ]}
-                width={500}
-                height={300}
-                dataset={cashGames}
+                }
             />
         </>
     )

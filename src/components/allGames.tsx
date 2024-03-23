@@ -69,15 +69,16 @@ const AllGames = ({ setShowAllGames }: any) => {
         return (
             <Fragment>
                 <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                        {new Date(cardData.date).toDateString()}
+                    </Typography>
                     <Typography variant="h5" component="div">
                         {cardData.location}{bull}<span style={{ color: profitColour }}>${profit.toFixed(2)}</span>
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {cardData.gameType}
                     </Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        {new Date(cardData.date).toDateString()}
-                    </Typography>
+
                     <Typography variant="body2">
                         <>${cardData.stake?.smallBlind.toFixed(2)} / ${cardData.stake?.bigBlind.toFixed(2)} / ${cardData.stake?.ante.toFixed(2)}</>
                     </Typography>

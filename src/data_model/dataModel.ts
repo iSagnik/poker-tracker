@@ -22,6 +22,10 @@ export interface Stake {
     ante: number
 }
 
+export interface Player {
+    name: string
+}
+
 export interface CashGame {
     id: string,
     gameType: GameType,
@@ -38,4 +42,5 @@ export interface CashGame {
     endTime: Date | null | undefined,
     durationMinutes: number,
     notes: string
+    players: Player[]
 }
