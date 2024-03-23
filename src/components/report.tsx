@@ -5,7 +5,6 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import GameStatsCard from './gameStats.tsx'
 import Charts from './charts.tsx'
-import Typography from '@mui/material/Typography';
 
 const Report = ({ setShowReport }: any) => {
     const [tab, setTab] = useState(0);

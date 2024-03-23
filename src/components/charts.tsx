@@ -10,7 +10,9 @@ import {
     Title,
     Tooltip,
     Legend,
-} from 'chart.js'; import { Line } from 'react-chartjs-2';
+    ChartOptions,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
@@ -69,9 +71,8 @@ const Charts = () => {
         return data
     }
 
-    const options = {
+    const options: ChartOptions<"line"> = {
         responsive: true,
-        tension: 0.2,
         interaction: {
             mode: 'nearest'
         },
