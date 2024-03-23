@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, SyntheticEvent } from 'react';
+import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
 import './App.css'
 import AddCashGameForm from './components/addCashGame.tsx';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -23,6 +23,31 @@ const App = () => {
   const [gameData, setGameData] = useState<User>(getEmptyUserData());
   const [showSuccess, setShowSuccess] = useState(false);
   const [filename, setFilename] = useState("");
+  const [cachedGameData, setCachedGameData] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Check if cached data is available
+    if (localStorage.getItem("gameData")) {
+      try {
+        const cacheData = localStorage.getItem("gameData");
+        if (!cacheData) {
+          return;
+        }
+        const data: User = JSON.parse(cacheData)
+        setCachedGameData(data);
+      } catch (error) {
+        console.error("Error parsing cached game data", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cachedGameData) {
+      setGameData(cachedGameData);
+      setFilename("Cache")
+      setCachedGameData(null);
+    }
+  }, [cachedGameData]);
 
   const handleAddCashGame = () => {
     setShowForm(true);
@@ -43,6 +68,7 @@ const App = () => {
 
   const handleSave = () => {
     console.log(gameData)
+    localStorage.setItem("gameData", JSON.stringify(gameData));
     try {
       exportToJson(gameData)
       setShowSuccess(true)

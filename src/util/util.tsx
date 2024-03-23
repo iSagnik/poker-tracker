@@ -55,6 +55,7 @@ export const handleFileUploadHelper = (e: ChangeEvent<HTMLInputElement>, setGame
             const user: User = JSON.parse(result as string);
             user.gameStats = updateGameStats(user)
             setGameData(user)
+            localStorage.setItem("gameData", JSON.stringify(user));
         }
         catch (error) {
             alert("Error: " + error)

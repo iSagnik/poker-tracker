@@ -149,8 +149,10 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         currentGameData.cashGameSessions.push(cashGame)
         currentGameData.gameStats = updateGameStats(currentGameData)
         setGameData(currentGameData)
+        localStorage.setItem("gameData", JSON.stringify(gameData));
         setShowSuccess(true)
         setShowForm(false)
+        
     };
 
     return (

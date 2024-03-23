@@ -53,6 +53,7 @@ const AllGames = ({ setShowAllGames }: any) => {
         updatedGameData.gameStats = updateGameStats(updatedGameData)
         setGameData(updatedGameData)
         setCashGames(updatedGameData.cashGameSessions)
+        localStorage.setItem("gameData", JSON.stringify(gameData));
         setCurrentCard(null)
     }
 
