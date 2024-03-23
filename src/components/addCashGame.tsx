@@ -21,7 +21,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
 
 const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -331,10 +330,6 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         </>
     );
 }
-
-// const largerScreen = useMediaQuery('(min-width: 600px)');
-
-// const FormFieldContainerWidth = largerScreen ? '20vw' : '100%';
 
 const FormContainer = styled(Container)`
 border: 1px solid #ddd;
