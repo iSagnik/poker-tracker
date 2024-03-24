@@ -17,6 +17,7 @@ import Stack from '@mui/material/Stack';
 import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { Cancel } from '@mui/icons-material';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -80,6 +81,14 @@ const App = () => {
     }
   }
 
+  const clearData = () => {
+    if (confirm("Are you sure you want to clear the data?") === true) {
+      setGameData(getEmptyUserData());
+      setFilename('')
+      setCachedGameData(null);
+    }
+  }
+
   const showLandingPage = () => {
     return !(showForm === true || showAllGames === true || showReport === true);
   }
@@ -122,7 +131,10 @@ const App = () => {
                     Upload Data
                     <input type="file" accept="text/plain,application/json" hidden onChange={handleFileUpload} />
                   </Button>
-                  {filename !== "" && <span style={{ opacity: "0.6" }}>Data loaded from {filename}</span>}
+                  {filename !== "" && <>
+                    <span style={{ opacity: "0.6" }}>Data loaded from {filename}</span>
+                    <Button startIcon={<Cancel onClick={clearData} />}></Button>
+                  </>}
                 </>
               )
             }
