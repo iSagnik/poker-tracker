@@ -18,6 +18,7 @@ import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { Cancel } from '@mui/icons-material';
+import logo from './assets/logo.png';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -109,7 +110,7 @@ const App = () => {
         <>
           <MainContainer>
             <Box display="flex" justifyContent="center">
-              <img src="/src/assets/logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{ marginTop: "8px" }} />
+              <img src={logo} alt="PokerTrackerLogo" width="70" height="50" style={{ marginTop: "8px" }} />
               <h1>PokerTracker</h1>
             </Box>
             {
