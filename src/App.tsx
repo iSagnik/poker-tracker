@@ -15,6 +15,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -96,8 +98,11 @@ const App = () => {
     <GameDataContext.Provider value={{ gameData, setGameData }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <>
-          <Container>
-            <h1>PokerTracker</h1>
+          <MainContainer>
+            <Box display="flex" justifyContent="center">
+              <img src="/src/assets/AQ-logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{marginTop: "8px"}}/>
+              <h1>PokerTracker</h1>
+            </Box>
             {
               showLandingPage() && (
                 <>
@@ -117,14 +122,14 @@ const App = () => {
                     Upload Data
                     <input type="file" accept="text/plain,application/json" hidden onChange={handleFileUpload} />
                   </Button>
-                  {filename !== "" && <>Data loaded from {filename}</>}
+                  {filename !== "" && <span style={{opacity: "0.6"}}>Data loaded from {filename}</span>}
                 </>
               )
             }
             {showForm && <AddCashGameForm setShowForm={setShowForm} setShowSuccess={setShowSuccess} />}
             {showAllGames && <AllGames setShowAllGames={setShowAllGames} />}
             {showReport && <Report setShowReport={setShowReport} />}
-          </Container>
+          </MainContainer>
           <Snackbar open={showSuccess} autoHideDuration={1500} onClose={closeSuccess}>
             <Alert
               onClose={closeSuccess}
@@ -140,5 +145,10 @@ const App = () => {
     </GameDataContext.Provider>
   )
 }
+
+const MainContainer = styled(Container)`
+margin: 0 auto;
+max-width: 100%;
+`;
 
 export default App
