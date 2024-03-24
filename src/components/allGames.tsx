@@ -15,6 +15,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import CashGameCard from './cashGameCard.tsx'
 import { updateGameStats } from '../util/util.tsx'
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const AllGames = ({ setShowAllGames }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -23,6 +28,7 @@ const AllGames = ({ setShowAllGames }: any) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [currentCard, setCurrentCard] = useState<CashGame | null>(null);
     const [showGameCard, setShowGameCard] = useState(false);
+    const [sortDate, setSortDate] = useState<string>("Newest");
 
     useEffect(() => {
         setCashGames(gameData.cashGameSessions)
@@ -120,6 +126,22 @@ const AllGames = ({ setShowAllGames }: any) => {
         )
     }
 
+    const sortCashGamesByDate = (cashGames: CashGame[], sortDate: string): CashGame[] => {
+        return cashGames.sort((a, b) => {
+            if (!a.date || !b.date) {
+                return 0;
+            }
+            const dateA: Date = new Date(a.date)
+            const dateB: Date = new Date(b.date)
+
+            if (sortDate === "Newest") {
+                return dateB.getTime() - dateA.getTime(); // Newest first
+            } else {
+                return dateA.getTime() - dateB.getTime(); // Oldest first
+            }
+        });
+    };
+
     return (
         <Box>
             <Button variant="outlined" onClick={() => setShowAllGames(false)}>
@@ -139,10 +161,29 @@ const AllGames = ({ setShowAllGames }: any) => {
                     </Button>
                 )
             }
+            {cashGames && cashGames.length > 0 && (
+                <Box display={'flex'} justifyContent={'center'}>
+                    <FormControl>
+                        <FormLabel>Sort by Date</FormLabel>
+                        <RadioGroup
+                            value={sortDate}
+                            onChange={(event) => setSortDate(event.target.value)}
+                            name="radio-buttons-group"
+                            row
+                        >
+                            <FormControlLabel value="Newest" control={<Radio />} label="Newest" />
+                            <FormControlLabel value="Oldest" control={<Radio />} label="Oldest" />
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )
+            }
             <Stack spacing={2}>
-                {cashGames && cashGames.map((cardData: CashGame, index) => (
+                {cashGames && sortCashGamesByDate(cashGames, sortDate).map((cardData: CashGame, index) => (
                     <Card key={index} variant="outlined" >
-                        {cardData && <CardData cardData={cardData} />}
+                        {
+                            cardData && (<CardData cardData={cardData} />)
+                        }
                     </Card>
                 ))}
             </Stack>
