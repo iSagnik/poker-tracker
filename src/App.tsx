@@ -100,7 +100,7 @@ const App = () => {
         <>
           <MainContainer>
             <Box display="flex" justifyContent="center">
-              <img src="src/assets/AQ-logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{marginTop: "8px"}}/>
+              <img src="src/assets/logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{ marginTop: "8px" }} />
               <h1>PokerTracker</h1>
             </Box>
             {
@@ -122,7 +122,7 @@ const App = () => {
                     Upload Data
                     <input type="file" accept="text/plain,application/json" hidden onChange={handleFileUpload} />
                   </Button>
-                  {filename !== "" && <span style={{opacity: "0.6"}}>Data loaded from {filename}</span>}
+                  {filename !== "" && <span style={{ opacity: "0.6" }}>Data loaded from {filename}</span>}
                 </>
               )
             }
