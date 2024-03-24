@@ -118,8 +118,8 @@ const Charts = () => {
                             datasets: [{
                                 label: 'Total Income',
                                 data: prepareDataset().map((item) => item.income),
-                                borderColor: 'rgb(53, 162, 235)',
-                                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                                borderColor: gameData.gameStats.income > 0 ? 'rgb(53, 162, 235)' : 'red',
+                                backgroundColor: gameData.gameStats.income > 0 ? 'rgb(53, 162, 235)' : 'red',
                             }]
                         }
                     }
