@@ -263,7 +263,8 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             onChange={(event) => setBuyIn(Number(event.target.value))}
                             InputProps={{
                                 inputProps: {
-                                    min: 0
+                                    min: 0,
+                                    step: 0.01
                                 }
                             }}
                         />
@@ -278,7 +279,8 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             type="number"
                             InputProps={{
                                 inputProps: {
-                                    min: 0
+                                    min: 0,
+                                    step: 0.01
                                 }
                             }}
                         />
@@ -341,6 +343,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={durationMinutes}
                             onChange={(event) => setDurationMinutes(Number(event.target.value))}
                             type="number"
+                            InputProps={{
+                                inputProps: {
+                                    min: 0,
+                                }
+                            }}
                         />
                     </FormFieldContainer>
                     <FormFieldContainer>
