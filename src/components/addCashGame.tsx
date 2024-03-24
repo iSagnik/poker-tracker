@@ -16,7 +16,6 @@ import { useGameData } from './gameDataContext.tsx';
 import { v4 as uuidv4 } from 'uuid';
 import { updateGameStats } from '../util/util.tsx'
 import { Cancel } from '@mui/icons-material';
-import Container from '@mui/material/Container';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -156,7 +155,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     };
 
     return (
-        <Container>
+        <Box>
             <Button variant="outlined" onClick={() => setShowForm(false)}>
                 Cancel
             </Button>
@@ -351,11 +350,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                     </Button>
                 </form>
             </FormContainer >
-        </Container>
+        </Box>
     );
 }
 
-const FormContainer = styled(Container)`
+const FormContainer = styled(Box)`
 border: 1px solid #ddd;
 border-radius: 5px;
 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);

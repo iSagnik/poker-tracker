@@ -15,7 +15,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import CashGameCard from './cashGameCard.tsx'
 import { updateGameStats } from '../util/util.tsx'
-import Container from '@mui/material/Container';
 
 const AllGames = ({ setShowAllGames }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -122,10 +121,15 @@ const AllGames = ({ setShowAllGames }: any) => {
     }
 
     return (
-        <Container>
+        <Box>
             <Button variant="outlined" onClick={() => setShowAllGames(false)}>
                 Back
             </Button>
+            {
+                cashGames && cashGames.length === 0 && (
+                    <Box>No Games</Box>
+                )
+            }
             {
                 cashGames && cashGames.length > 0 && (
                     <Button variant="outlined" onClick={() => toggleEdit()}>
@@ -143,7 +147,7 @@ const AllGames = ({ setShowAllGames }: any) => {
                 ))}
             </Stack>
             {showGameCard && <CashGameCard cashGame={currentCard} showGameCard={showGameCard} setShowGameCard={setShowGameCard} />}
-        </Container>
+        </Box>
     )
 }
 
