@@ -152,11 +152,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         localStorage.setItem("gameData", JSON.stringify(gameData));
         setShowSuccess(true)
         setShowForm(false)
-        
+
     };
 
     return (
-        <>
+        <Container>
             <Button variant="outlined" onClick={() => setShowForm(false)}>
                 Cancel
             </Button>
@@ -331,7 +331,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                     </Button>
                 </form>
             </FormContainer >
-        </>
+        </Container>
     );
 }
 
