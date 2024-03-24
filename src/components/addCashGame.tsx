@@ -20,6 +20,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
 
 const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const { gameData, setGameData } = useGameData();
@@ -174,42 +175,44 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             <MenuItem value={GameType.SEVEN_CARD_STUD_EIGHT}>7 Card Stud 8</MenuItem>
                         </Select>
                     </FormFieldContainer>
+                    <Stack>
+                        <FormFieldContainer>
+                            <InputLabel>Stake</InputLabel>
+                            <label htmlFor="smallBlind">Small Blind</label>
+                            <Autocomplete
+                                id='small-blind-input'
+                                style={{ maxWidth: '200px' }}
+                                freeSolo
+                                options={stakeValueOptions.map((option) => String(option.value))}
+                                onChange={(event, value) => handleSmallBlindChange(Number(value))}
+                                renderInput={(params) => <TextField {...params} label="Small Blind" />}
+                            />
+                        </FormFieldContainer>
+                        <FormFieldContainer>
+                            <label htmlFor="bigBlind">Big Blind</label>
+                            <Autocomplete
+                                id='big-blind-input'
+                                style={{ maxWidth: '200px' }}
+                                freeSolo
+                                options={stakeValueOptions.map((option) => String(option.value))}
+                                onChange={(event, value) => handleBigBlindChange(Number(value))}
+                                renderInput={(params) => <TextField {...params} label="Big Blind" />}
+                            />
+                        </FormFieldContainer>
+                        <FormFieldContainer>
+                            <label htmlFor="ante">Ante</label>
+                            <Autocomplete
+                                id='ante-input'
+                                style={{ maxWidth: '200px' }}
+                                freeSolo
+                                options={stakeValueOptions.map((option) => String(option.value))}
+                                onChange={(event, value) => handleAnteChange(Number(value))}
+                                renderInput={(params) => <TextField {...params} label="Ante" />}
+                            />
+                        </FormFieldContainer>
+                    </Stack>
                     <FormFieldContainer>
-                        <InputLabel>Stake</InputLabel>
-                        <label htmlFor="smallBlind">Small Blind</label>
-                        <Autocomplete
-                            id='small-blind-input'
-                            style={{ maxWidth: '200px' }}
-                            freeSolo
-                            options={stakeValueOptions.map((option) => String(option.value))}
-                            onChange={(event, value) => handleSmallBlindChange(Number(value))}
-                            renderInput={(params) => <TextField {...params} label="Small Blind" />}
-                        />
-                    </FormFieldContainer>
-                    <FormFieldContainer>
-                        <label htmlFor="bigBlind">Big Blind</label>
-                        <Autocomplete
-                            id='big-blind-input'
-                            style={{ maxWidth: '200px' }}
-                            freeSolo
-                            options={stakeValueOptions.map((option) => String(option.value))}
-                            onChange={(event, value) => handleBigBlindChange(Number(value))}
-                            renderInput={(params) => <TextField {...params} label="Big Blind" />}
-                        />
-                    </FormFieldContainer>
-                    <FormFieldContainer>
-                        <label htmlFor="ante">Ante</label>
-                        <Autocomplete
-                            id='ante-input'
-                            style={{ maxWidth: '200px' }}
-                            freeSolo
-                            options={stakeValueOptions.map((option) => String(option.value))}
-                            onChange={(event, value) => handleAnteChange(Number(value))}
-                            renderInput={(params) => <TextField {...params} label="Ante" />}
-                        />
-                    </FormFieldContainer>
-                    <FormFieldContainer>
-                        <InputLabel>Limit Type</InputLabel>
+                        <InputLabel id="limit-type-label">Limit Type</InputLabel>
                         <Select
                             required
                             name="limitType"
@@ -367,6 +370,7 @@ text-align: center;
 const FormFieldContainer = styled(Box)`
 padding: 10px;
 max-width: 100%;
+min-width: 200px;
 margin: 0 auto;
 `;
 
