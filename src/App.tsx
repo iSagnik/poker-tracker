@@ -100,7 +100,7 @@ const App = () => {
         <>
           <MainContainer>
             <Box display="flex" justifyContent="center">
-              <img src="/src/assets/AQ-logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{marginTop: "8px"}}/>
+              <img src="src/assets/AQ-logo.png" alt="PokerTrackerLogo" width="70" height="50" style={{marginTop: "8px"}}/>
               <h1>PokerTracker</h1>
             </Box>
             {
