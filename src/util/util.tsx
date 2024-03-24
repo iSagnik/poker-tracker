@@ -18,7 +18,7 @@ export const getEmptyUserData = () => {
 }
 
 export const exportToJson = (objectData: User) => {
-    let filename = "export.json";
+    let filename = "poker_data.json";
     let contentType = "application/json;charset=utf-8;";
     const nav = (window.navigator as any);
     if (window.navigator && nav.msSaveOrOpenBlob) {
