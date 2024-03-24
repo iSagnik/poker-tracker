@@ -234,6 +234,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                                     value={fixedLimit}
                                     onChange={(event) => setFixedLimit(Number(event.target.value))}
                                     type="number"
+                                    InputProps={{
+                                        inputProps: {
+                                            min: 0
+                                        }
+                                    }}
                                 />
                             </>)}
                     </FormFieldContainer>
@@ -254,6 +259,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={buyIn}
                             type="number"
                             onChange={(event) => setBuyIn(Number(event.target.value))}
+                            InputProps={{
+                                inputProps: {
+                                    min: 0
+                                }
+                            }}
                         />
                     </FormFieldContainer>
                     <FormFieldContainer>
@@ -264,6 +274,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={cashedOut}
                             onChange={(event) => setCashedOut(Number(event.target.value))}
                             type="number"
+                            InputProps={{
+                                inputProps: {
+                                    min: 0
+                                }
+                            }}
                         />
                     </FormFieldContainer>
                     <FormFieldContainer>
@@ -273,6 +288,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={playerCount}
                             onChange={(event) => setPlayerCount(Number(event.target.value))}
                             type="number"
+                            InputProps={{
+                                inputProps: {
+                                    min: 0
+                                }
+                            }}
                         />
                     </FormFieldContainer>
                     <FormFieldContainer>

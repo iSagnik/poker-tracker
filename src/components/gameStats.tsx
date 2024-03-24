@@ -19,7 +19,7 @@ const GameStatsCard = () => {
 
     useEffect(() => {
         setGameStats(gameData.gameStats)
-    }, [gameData]); // Dependency array: useEffect runs when myStateVariable changes
+    }, [gameData]);
 
     const profitColour = (value: number | null) => {
         let profitColour = "gray"
@@ -81,7 +81,7 @@ const GameStatsCard = () => {
                 <Divider component="li" />
                 <ListItem>
                     <ListItemText
-                        primary={(gameStats && (gameStats.cashedCount / gameStats.sessionCount * 100)) + "% (" + gameStats?.cashedCount + "/" + gameStats?.sessionCount + ")"}
+                        primary={(gameStats && (gameStats.cashedCount / gameStats.sessionCount * 100) || 0) + "% (" + gameStats?.cashedCount + "/" + gameStats?.sessionCount + ")"}
                         secondary="Cashed rate" />
                 </ListItem>
             </List >
