@@ -81,7 +81,7 @@ const GameStatsCard = () => {
                 <Divider component="li" />
                 <ListItem>
                     <ListItemText
-                        primary={(gameStats && (gameStats.cashedCount / gameStats.sessionCount * 100) || 0) + "% (" + gameStats?.cashedCount + "/" + gameStats?.sessionCount + ")"}
+                        primary={(gameStats && (gameStats.cashedCount / gameStats.sessionCount * 100) || 0).toFixed(2) + "% (" + gameStats?.cashedCount + "/" + gameStats?.sessionCount + ")"}
                         secondary="Cashed rate" />
                 </ListItem>
             </List >
