@@ -28,7 +28,8 @@ const AllGames = ({ setShowAllGames }: any) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [currentCard, setCurrentCard] = useState<CashGame | null>(null);
     const [showGameCard, setShowGameCard] = useState(false);
-    const [sortDate, setSortDate] = useState<string>("Newest");
+    const [sort, setSort] = useState<string>("Newest");
+    const [showSortOptions, setShowSortOptions] = useState(false);
 
     useEffect(() => {
         setCashGames(gameData.cashGameSessions)
@@ -37,6 +38,10 @@ const AllGames = ({ setShowAllGames }: any) => {
 
     const toggleEdit = () => {
         setEditIcon(!editIcon)
+    }
+
+    const toggleSortOptions = () => {
+        setShowSortOptions(!showSortOptions)
     }
 
     const bull = (
@@ -126,18 +131,25 @@ const AllGames = ({ setShowAllGames }: any) => {
         )
     }
 
-    const sortCashGamesByDate = (cashGames: CashGame[], sortDate: string): CashGame[] => {
+    const sortCashGames = (cashGames: CashGame[], sortType: string): CashGame[] => {
         return cashGames.sort((a, b) => {
-            if (!a.date || !b.date) {
-                return 0;
+            if (sortType === "Highest") {
+                return b.profit - a.profit;
             }
-            const dateA: Date = new Date(a.date)
-            const dateB: Date = new Date(b.date)
-
-            if (sortDate === "Newest") {
-                return dateB.getTime() - dateA.getTime(); // Newest first
-            } else {
-                return dateA.getTime() - dateB.getTime(); // Oldest first
+            else if (sortType === "Lowest") {
+                return a.profit - b.profit;
+            }
+            else {
+                if (!a.date || !b.date) {
+                    return 0;
+                }
+                const dateA: Date = new Date(a.date)
+                const dateB: Date = new Date(b.date)
+                if (sortType === "Oldest") {
+                    return dateA.getTime() - dateB.getTime(); // Oldest first
+                } else {
+                    return dateB.getTime() - dateA.getTime(); // Newest first - default
+                }
             }
         });
     };
@@ -161,13 +173,22 @@ const AllGames = ({ setShowAllGames }: any) => {
                     </Button>
                 )
             }
-            {cashGames && cashGames.length > 0 && (
+            {
+                cashGames && cashGames.length > 0 && (
+                    <Button variant="outlined" onClick={() => toggleSortOptions()}>
+                        {
+                            showSortOptions ? <>Close Sort</> : <>Sort</>
+                        }
+                    </Button>
+                )
+            }
+            {cashGames && cashGames.length > 0 && showSortOptions && (
                 <Box display={'flex'} justifyContent={'center'}>
                     <FormControl>
                         <FormLabel>Sort by Date</FormLabel>
                         <RadioGroup
-                            value={sortDate}
-                            onChange={(event) => setSortDate(event.target.value)}
+                            value={sort}
+                            onChange={(event) => setSort(event.target.value)}
                             name="radio-buttons-group"
                             row
                         >
@@ -175,11 +196,23 @@ const AllGames = ({ setShowAllGames }: any) => {
                             <FormControlLabel value="Oldest" control={<Radio />} label="Oldest" />
                         </RadioGroup>
                     </FormControl>
+                    <FormControl>
+                        <FormLabel>Sort by Profit</FormLabel>
+                        <RadioGroup
+                            value={sort}
+                            onChange={(event) => setSort(event.target.value)}
+                            name="radio-buttons-group"
+                            row
+                        >
+                            <FormControlLabel value="Highest" control={<Radio />} label="Highest" />
+                            <FormControlLabel value="Lowest" control={<Radio />} label="Lowest" />
+                        </RadioGroup>
+                    </FormControl>
                 </Box>
             )
             }
             <Stack spacing={2}>
-                {cashGames && sortCashGamesByDate(cashGames, sortDate).map((cardData: CashGame, index) => (
+                {cashGames && sortCashGames(cashGames, sort).map((cardData: CashGame, index) => (
                     <Card key={index} variant="outlined" >
                         {
                             cardData && (<CardData cardData={cardData} />)
