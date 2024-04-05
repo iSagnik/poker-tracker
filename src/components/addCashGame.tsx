@@ -235,11 +235,8 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                                     name="fixedLimit"
                                     value={fixedLimit}
                                     onChange={(event) => setFixedLimit(Number(event.target.value))}
-                                    type="number"
-                                    InputProps={{
-                                        inputProps: {
-                                            min: 0
-                                        }
+                                    inputProps={{
+                                        min: '0'
                                     }}
                                 />
                             </>)}
@@ -259,13 +256,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             required
                             name="buyIn"
                             value={buyIn}
-                            type="number"
                             onChange={(event) => setBuyIn(Number(event.target.value))}
-                            InputProps={{
-                                inputProps: {
-                                    min: 0,
-                                    step: 0.01
-                                }
+                            inputProps={{
+                                min: '0',
+                                step: '0.01',
+                                type: 'number',
                             }}
                         />
                     </FormFieldContainer>
@@ -276,12 +271,10 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             name="cashedOut"
                             value={cashedOut}
                             onChange={(event) => setCashedOut(Number(event.target.value))}
-                            type="number"
-                            InputProps={{
-                                inputProps: {
-                                    min: 0,
-                                    step: 0.01
-                                }
+                            inputProps={{
+                                min: '0',
+                                step: '0.01',
+                                type: 'number',
                             }}
                         />
                     </FormFieldContainer>
@@ -291,11 +284,9 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             name="playerCount"
                             value={playerCount}
                             onChange={(event) => setPlayerCount(Number(event.target.value))}
-                            type="number"
-                            InputProps={{
-                                inputProps: {
-                                    min: 0
-                                }
+                            inputProps={{
+                                min: '0',
+                                type: 'number'
                             }}
                         />
                     </FormFieldContainer>
