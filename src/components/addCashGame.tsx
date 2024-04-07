@@ -35,12 +35,12 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
     const [location, setLocation] = useState('');
     const [buyIn, setBuyIn] = useState('');
     const [cashedOut, setCashedOut] = useState('')
-    const [playerCount, setPlayerCount] = useState<number>(0);
+    const [playerCount, setPlayerCount] = useState('');
     const [players, setPlayers] = useState<Player[]>([]);
     const [date, setDate] = useState<Dayjs | null>(dayjs());
     const [startTime, setStartTime] = useState<Dayjs | null>(null);
     const [endTime, setEndTime] = useState<Dayjs | null>(null);
-    const [durationMinutes, setDurationMinutes] = useState<number>(0);
+    const [durationMinutes, setDurationMinutes] = useState('');
     const [notes, setNotes] = useState('');
     const [showFixedLimit, setShowFixedLimit] = useState(false);
 
@@ -65,7 +65,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             return;
         }
         const durationMinutes: number = ((endTime!.diff(newStartTime) / 1000) / 60) // milliseconds to minutes
-        setDurationMinutes(durationMinutes)
+        setDurationMinutes(durationMinutes + '')
     }
 
     const handleEndTimeChange = (newEndTime: Dayjs | null) => {
@@ -74,7 +74,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             return
         }
         const durationMinutes: number = ((newEndTime!.diff(startTime) / 1000) / 60) // milliseconds to minutes
-        setDurationMinutes(durationMinutes)
+        setDurationMinutes(durationMinutes + '')
     }
 
     const handleSmallBlindChange = (value: number | null) => {
@@ -124,6 +124,8 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         const buyInValue = Number(buyIn);
         const cashedOutValue = Number(cashedOut)
         const fixedLimitValue = Number(fixedLimit)
+        const playerCountValue = parseInt(playerCount)
+        const durationMinutesValue = parseInt(durationMinutes)
         if (isNaN(buyInValue) || buyInValue <= 0) {
             alert("Buy in must be greater than 0");
             return;
@@ -137,11 +139,11 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             return;
         }
 
-        if (playerCount && playerCount <= 0) {
+        if (isNaN(playerCountValue) && playerCountValue <= 0) {
             alert("Player count cannot be negetive.");
             return;
         }
-        if (durationMinutes && durationMinutes <= 0) {
+        if (isNaN(durationMinutesValue) && durationMinutesValue <= 0) {
             alert("Duration minutes must be greater than 0.");
             return;
         }
@@ -157,12 +159,12 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
             buyIn: buyInValue,
             cashedOut: cashedOutValue,
             profit,
-            playerCount: playerCount ? playerCount : 0,
+            playerCount: playerCountValue,
             players,
             date: gameDate,
             startTime: gameStartTime,
             endTime: gameEndTime,
-            durationMinutes: durationMinutes ? durationMinutes : 0,
+            durationMinutes: durationMinutesValue,
             notes
         }
         let currentGameData: User = gameData
@@ -296,7 +298,6 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                         <TextField
                             required
                             name="cashedOut"
-                            type="number"
                             value={cashedOut}
                             onChange={(event) => {
                                 const num = Number(event.target.value)
@@ -312,14 +313,14 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                         <InputLabel>Player Count</InputLabel>
                         <TextField
                             name="playerCount"
-                            type="number"
                             value={playerCount}
                             onChange={(event) => {
                                 const num = Number(event.target.value)
                                 if (isNaN(num)) {
+                                    setPlayerCount('')
                                     return;
                                 }
-                                setPlayerCount(num)
+                                setPlayerCount(event.target.value)
                             }}
                         />
                     </FormFieldContainer>
@@ -340,7 +341,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={newPlayerName}
                             onChange={(event) => setNewPlayerName(event.target.value)}
                         />
-                        <Button onClick={addPlayer} disabled={players.length >= (playerCount ? playerCount : 0)}>Add</Button>
+                        <Button onClick={addPlayer} disabled={players.length >= (isNaN(Number(playerCount)) ? 0 : Number(playerCount))}>Add</Button>
                     </FormFieldContainer>
                     <FormFieldContainer>
                         <DatePicker label="Date" value={date} onChange={(newDate) => setDate(newDate)} />
@@ -369,9 +370,10 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             onChange={(event) => {
                                 const num = Number(event.target.value)
                                 if (isNaN(num)) {
+                                    setDurationMinutes('')
                                     return;
                                 }
-                                setDurationMinutes(num)
+                                setDurationMinutes(event.target.value)
                             }}
                         />
                     </FormFieldContainer>
