@@ -31,16 +31,16 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         ante: 0,
     });
     const [limitType, setLimitType] = useState(LimitType.NO_LIMIT);
-    const [fixedLimit, setFixedLimit] = useState(0);
+    const [fixedLimit, setFixedLimit] = useState('');
     const [location, setLocation] = useState('');
-    const [buyIn, setBuyIn] = useState(0);
-    const [cashedOut, setCashedOut] = useState(0);
-    const [playerCount, setPlayerCount] = useState(0);
+    const [buyIn, setBuyIn] = useState('');
+    const [cashedOut, setCashedOut] = useState('')
+    const [playerCount, setPlayerCount] = useState<number>(0);
     const [players, setPlayers] = useState<Player[]>([]);
     const [date, setDate] = useState<Dayjs | null>(dayjs());
     const [startTime, setStartTime] = useState<Dayjs | null>(null);
     const [endTime, setEndTime] = useState<Dayjs | null>(null);
-    const [durationMinutes, setDurationMinutes] = useState(0);
+    const [durationMinutes, setDurationMinutes] = useState<number>(0);
     const [notes, setNotes] = useState('');
     const [showFixedLimit, setShowFixedLimit] = useState(false);
 
@@ -51,7 +51,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         }
         else {
             setShowFixedLimit(false)
-            setFixedLimit(0)
+            setFixedLimit('')
         }
     }
 
@@ -121,28 +121,48 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
         const gameEndTime: Date | undefined = endTime?.toDate();
         const id: string = Date.now().toString() + '-' + uuidv4();
         // Validate times and durations.
-        if (buyIn <= 0) {
+        const buyInValue = Number(buyIn);
+        const cashedOutValue = Number(cashedOut)
+        const fixedLimitValue = Number(fixedLimit)
+        if (isNaN(buyInValue) || buyInValue <= 0) {
             alert("Buy in must be greater than 0");
             return;
         }
-        const profit = cashedOut - buyIn
+        if (isNaN(cashedOutValue) || cashedOutValue <= 0) {
+            alert("Cashed Out must be greater than 0.");
+            return;
+        }
+        if (showFixedLimit && (isNaN(fixedLimitValue) || fixedLimitValue <= 0)) {
+            alert("Fixed limit must be greater than 0.");
+            return;
+        }
+
+        if (playerCount && playerCount <= 0) {
+            alert("Player count cannot be negetive.");
+            return;
+        }
+        if (durationMinutes && durationMinutes <= 0) {
+            alert("Duration minutes must be greater than 0.");
+            return;
+        }
+        const profit = cashedOutValue - buyInValue
 
         let cashGame: CashGame = {
             id,
             gameType,
             stake,
             limitType,
-            fixedLimit,
+            fixedLimit: fixedLimitValue,
             location,
-            buyIn,
-            cashedOut,
+            buyIn: buyInValue,
+            cashedOut: cashedOutValue,
             profit,
-            playerCount,
+            playerCount: playerCount ? playerCount : 0,
             players,
             date: gameDate,
             startTime: gameStartTime,
             endTime: gameEndTime,
-            durationMinutes,
+            durationMinutes: durationMinutes ? durationMinutes : 0,
             notes
         }
         let currentGameData: User = gameData
@@ -234,9 +254,14 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                                 <TextField
                                     name="fixedLimit"
                                     value={fixedLimit}
-                                    onChange={(event) => setFixedLimit(Number(event.target.value))}
-                                    inputProps={{
-                                        min: '0'
+                                    type="number"
+                                    onChange={(event) => {
+                                        const num = Number(event.target.value)
+                                        if (isNaN(num)) {
+                                            setFixedLimit('')
+                                            return;
+                                        }
+                                        setFixedLimit(event.target.value)
                                     }}
                                 />
                             </>)}
@@ -256,11 +281,13 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             required
                             name="buyIn"
                             value={buyIn}
-                            onChange={(event) => setBuyIn(Number(event.target.value))}
-                            inputProps={{
-                                min: '0',
-                                step: '0.01',
-                                type: 'number',
+                            onChange={(event) => {
+                                const num = Number(event.target.value)
+                                if (isNaN(num)) {
+                                    setBuyIn('');
+                                    return;
+                                }
+                                setBuyIn(event.target.value);
                             }}
                         />
                     </FormFieldContainer>
@@ -269,12 +296,15 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                         <TextField
                             required
                             name="cashedOut"
+                            type="number"
                             value={cashedOut}
-                            onChange={(event) => setCashedOut(Number(event.target.value))}
-                            inputProps={{
-                                min: '0',
-                                step: '0.01',
-                                type: 'number',
+                            onChange={(event) => {
+                                const num = Number(event.target.value)
+                                if (isNaN(num)) {
+                                    setCashedOut('')
+                                    return;
+                                }
+                                setCashedOut(event.target.value)
                             }}
                         />
                     </FormFieldContainer>
@@ -282,11 +312,14 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                         <InputLabel>Player Count</InputLabel>
                         <TextField
                             name="playerCount"
+                            type="number"
                             value={playerCount}
-                            onChange={(event) => setPlayerCount(Number(event.target.value))}
-                            inputProps={{
-                                min: '0',
-                                type: 'number'
+                            onChange={(event) => {
+                                const num = Number(event.target.value)
+                                if (isNaN(num)) {
+                                    return;
+                                }
+                                setPlayerCount(num)
                             }}
                         />
                     </FormFieldContainer>
@@ -307,7 +340,7 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                             value={newPlayerName}
                             onChange={(event) => setNewPlayerName(event.target.value)}
                         />
-                        <Button onClick={addPlayer} disabled={players.length >= playerCount}>Add</Button>
+                        <Button onClick={addPlayer} disabled={players.length >= (playerCount ? playerCount : 0)}>Add</Button>
                     </FormFieldContainer>
                     <FormFieldContainer>
                         <DatePicker label="Date" value={date} onChange={(newDate) => setDate(newDate)} />
@@ -331,13 +364,14 @@ const AddCashGameForm = ({ setShowForm, setShowSuccess }: any) => {
                         <TextField
                             disabled={startTime !== null && endTime !== null}
                             name="durationMinutes"
-                            value={durationMinutes}
-                            onChange={(event) => setDurationMinutes(Number(event.target.value))}
                             type="number"
-                            InputProps={{
-                                inputProps: {
-                                    min: 0,
+                            value={durationMinutes}
+                            onChange={(event) => {
+                                const num = Number(event.target.value)
+                                if (isNaN(num)) {
+                                    return;
                                 }
+                                setDurationMinutes(num)
                             }}
                         />
                     </FormFieldContainer>
