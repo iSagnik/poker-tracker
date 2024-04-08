@@ -25,7 +25,7 @@ ChartJS.register(
     Tooltip,
     Legend,);
 
-const TotalIncomeChart = () => {
+const IncomeByStakeChart = () => {
     const { gameData } = useGameData();
     const [cashGames, setCashGames] = useState<CashGame[]>([]);
 
@@ -89,7 +89,7 @@ const TotalIncomeChart = () => {
             },
             title: {
                 display: true,
-                text: 'Income over time',
+                text: 'Income over time by stake',
             },
             datalabels: {
                 display: true,
@@ -126,4 +126,4 @@ const TotalIncomeChart = () => {
 
 }
 
-export default TotalIncomeChart
+export default IncomeByStakeChart
