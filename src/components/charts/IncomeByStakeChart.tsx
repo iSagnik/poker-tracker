@@ -11,6 +11,7 @@ import {
     Tooltip,
     Legend,
     ChartOptions,
+    Colors,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -23,7 +24,8 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend,);
+    Legend,
+    Colors,);
 
 const IncomeByStakeChart = () => {
     const { gameData } = useGameData();
@@ -34,13 +36,14 @@ const IncomeByStakeChart = () => {
     }, [gameData]);
 
     interface DataItem {
+        stake: string,
         income: number;
         date: string;
     }
 
     const prepareDataset = () => {
-        const data: DataItem[] = [];
-        let runningIncome = 0;
+        const dataPointsMap: { [key: string]: DataItem[] } = {};
+        const datesSet = new Set()
         cashGames.sort((a, b) => {
             const dateA = a.date ? new Date(a.date) : new Date(0);
             const dateB = b.date ? new Date(b.date) : new Date(0);
@@ -48,32 +51,52 @@ const IncomeByStakeChart = () => {
         })
 
         cashGames.forEach((game) => {
+            const stake = `${game.stake.smallBlind}/${game.stake.bigBlind}${game.stake.ante > 0 ? `/${game.stake.ante}` : ""}`;
+            if (!dataPointsMap[stake]) {
+                dataPointsMap[stake] = []
+            }
             // Handle potential null/NaN for profit
             const profit = isNaN(game.profit) ? 0 : game.profit;
-            runningIncome += profit;
+            const lastIncome = dataPointsMap[stake][dataPointsMap[stake].length - 1]?.income ?? 0;
 
             // Format date (you might want a custom date formatting function)
             const date = game.date ? new Date(game.date).toDateString() : "";
 
-            data.push({
-                income: runningIncome,
+            dataPointsMap[stake].push({
+                stake,
+                income: profit + lastIncome,
                 date,
             });
+            if (!datesSet.has(date)) {
+                datesSet.add(date)
+            }
         });
-        return data
+        const dates = Array.from(datesSet)
+        return { dataPointsMap, dates }
     }
 
     const prepareData = () => {
-        const dataPoints = prepareDataset();
+        const { dataPointsMap, dates } = prepareDataset();
+
+        const datasets = []
+
+        for (const stake in dataPointsMap) {
+            const datasetItem = {
+                label: stake,
+                data: dataPointsMap[stake].map((item) => item.income)
+            }
+            datasets.push(datasetItem)
+        }
+
+        // console.log(datasets)
+
         const data = {
-            labels: dataPoints.map((item) => item.date),
-            datasets: [{
-                label: 'Income',
-                data: dataPoints.map((item) => item.income),
-                borderColor: gameData.gameStats.income > 0 ? 'rgb(53, 162, 235)' : 'red',
-                backgroundColor: gameData.gameStats.income > 0 ? 'rgb(53, 162, 235)' : 'red',
-            }]
-        };
+            labels: dates,
+            datasets: datasets
+        }
+
+        console.log(data)
+
         return data;
     }
 
@@ -84,6 +107,9 @@ const IncomeByStakeChart = () => {
             mode: 'nearest'
         },
         plugins: {
+            colors: {
+                forceOverride: true
+            },
             legend: {
                 position: 'top' as const,
             },
